@@ -13,8 +13,6 @@ exports.newData = (event, context) => {
   const pubsubValues = Buffer.from(event.data, 'base64').toString().split(' ');
   doc.create({
     "31.5": pubsubValues[0],
-    "63": pubsubValues[1],
-    "125": pubsubValues[2],
     "everything": pubsubValues,
     "timestamp": new Date(),
     "device": event.data
