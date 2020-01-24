@@ -1,0 +1,9 @@
+{
+  "name": "fyp-ingress",
+  "author": {"name": "blueish"},
+  "version": "0.0.1",
+  "dependencies": {
+    "@google-cloud/firestore": "^3.4.1",
+    "@google-cloud/pubsub": "^0.18.0"
+  }
+}
