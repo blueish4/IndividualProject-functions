@@ -14,10 +14,14 @@ exports.newData = (event, context) => {
   doc.create({
     "31.5": pubsubValues[0],
     "everything": pubsubValues,
-    "timestamp": new Date(),
-    "device": event.data
+    "timestamp": event.timestamp,
+    "device": event.attributes.deviceId
   });
   console.log(event);
   console.log(pubsubValues);
 };
-  
+
+exports.getLatest = (req, res) => {
+  const latest = firestore.collection('frequencies').orderBy('timestamp', 'desc').limit(1);
+  res.send(latest);
+};
