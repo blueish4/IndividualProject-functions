@@ -22,7 +22,8 @@ exports.newData = (event, context) => {
 };
 
 exports.getLatest = async (req, res) => {
-  firestore.collection('frequencies').orderBy('timestamp', 'desc').limit(1).get().then(latest => {
-    res.send(latest);
+  firestore.collection('frequencies').orderBy('timestamp', 'desc').limit(1).get().then(snapshot => {
+    const docs = snapshot.docs;
+    res.send(docs[0].data());
   });
 };
