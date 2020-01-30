@@ -14,7 +14,7 @@ exports.newData = (event, context) => {
   const majorPeak = decodedData.readDoubleLE();
   let fftPeaks = [];
   let i = 0;
-  while(decodedData.length<8+i){
+  while(decodedData.length>=8+i){
     fftPeaks.push(decodedData.readUInt16(8+i));
     i+=2; // jump to the next int
   }
