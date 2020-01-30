@@ -22,6 +22,6 @@ exports.newData = (event, context) => {
 };
 
 exports.getLatest = (req, res) => {
-  const latest = firestore.collection('frequencies').orderBy('timestamp', 'desc').limit(1);
+  const latest = firestore.collection('frequencies').where('device', '==', 'node-1').orderBy('timestamp', 'desc').limit(1);
   res.send(latest);
 };
