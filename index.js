@@ -13,12 +13,12 @@ exports.newData = (event, context) => {
   let doc = firestore.collection('frequencies').doc();
   const majorPeak = decodedData.readDoubleLE();
   let fftPeaks = [];
-  let i = 0;
-  while(decodedData.length>8+i){
-    fftPeaks.push(decodedData.readUInt16LE(8+i));
+  let i = 8;
+  while(decodedData.length>i){
+    fftPeaks.push(decodedData.readUInt16BE(i));
     i+=2; // jump to the next int
   }
-  console.log(fftPeaks);
+  console.log(JSON.stringify(fftPeaks));
   doc.create({
     majorPeak,
     "spectra": fftPeaks,
