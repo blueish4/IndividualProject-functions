@@ -18,7 +18,7 @@ exports.newData = (event, context) => {
     fftPeaks.push(decodedData.readUInt16(8+i));
     i+=2; // jump to the next int
   }
-  console.log(event);
+  console.log(fftPeaks);
   doc.create({
     majorPeak,
     "spectra": fftPeaks,
