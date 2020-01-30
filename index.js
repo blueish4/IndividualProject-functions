@@ -16,7 +16,7 @@ exports.newData = (event, context) => {
   doc.create({
     "31.5": pubsubValues[0],
     "everything": pubsubValues,
-    "timestamp": event.timestamp,
+    "timestamp": new Date(),
     "device": event.attributes.deviceId
   });
 };
