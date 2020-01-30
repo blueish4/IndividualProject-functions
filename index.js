@@ -11,14 +11,14 @@ const firestore = new Firestore();
 exports.newData = (event, context) => {
   let doc = firestore.collection('frequencies').doc();
   const pubsubValues = Buffer.from(event.data, 'base64').toString().trim().split(' ');
+  console.log(event);
+  console.log(pubsubValues);
   doc.create({
     "31.5": pubsubValues[0],
     "everything": pubsubValues,
     "timestamp": event.timestamp,
     "device": event.attributes.deviceId
   });
-  console.log(event);
-  console.log(pubsubValues);
 };
 
 exports.getLatest = async (req, res) => {
