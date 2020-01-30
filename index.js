@@ -9,13 +9,19 @@ const firestore = new Firestore();
  * @param {!Object} context Metadata for the event.
  */
 exports.newData = (event, context) => {
+  const decodedData = Buffer.from(event.data, 'base64');
   let doc = firestore.collection('frequencies').doc();
-  const pubsubValues = Buffer.from(event.data, 'base64').toString().trim().split(' ');
+  const majorPeak = decodedData.readDoubleLE();
+  let fftPeaks = [];
+  let i = 0;
+  while(decodedData.length<8+i){
+    fftPeaks.push(decodedData.readUInt16(8+i));
+    i+=2; // jump to the next int
+  }
   console.log(event);
-  console.log(pubsubValues);
   doc.create({
-    "31.5": pubsubValues[0],
-    "everything": pubsubValues,
+    majorPeak,
+    "spectra": fftPeaks,
     "timestamp": new Date(),
     "device": event.attributes.deviceId
   });
