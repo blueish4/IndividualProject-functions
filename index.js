@@ -21,7 +21,7 @@ exports.newData = (event, context) => {
   console.log(pubsubValues);
 };
 
-exports.getLatest = (req, res) => {
+exports.getLatest = async (req, res) => {
   const latest = await firestore.collection('frequencies').where('device', '==', 'node-1').orderBy('timestamp', 'desc').limit(1).get();
   res.send(latest);
 };
