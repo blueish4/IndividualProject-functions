@@ -15,9 +15,10 @@ exports.newData = (event, context) => {
   let fftPeaks = [];
   let i = 8;
   while(decodedData.length>i){
-    fftPeaks.push(decodedData.readUInt16BE(i));
+    fftPeaks.push(decodedData.readUInt16LE(i));
     i+=2; // jump to the next int
   }
+  console.log(event);
   console.log(JSON.stringify(fftPeaks));
   doc.create({
     majorPeak,
