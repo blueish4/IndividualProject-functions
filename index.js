@@ -9,23 +9,32 @@ const firestore = new Firestore();
  * @param {!Object} context Metadata for the event.
  */
 exports.newData = (event, context) => {
+  const decodedData = Buffer.from(event.data, 'base64');
   let doc = firestore.collection('frequencies').doc();
-  const pubsubValues = Buffer.from(event.data, 'base64').toString().split(' ');
+  const majorPeak = decodedData.readDoubleLE();
+  const dba = decodedData.readDoubleLE(8);
+  const fftPeaks = [];
+  let i = 8*2;
+  while(decodedData.length>i){
+    fftPeaks.push(decodedData.readUInt16LE(i));
+    i+=2; // jump to the next int
+  }
   doc.create({
-    "31.5": pubsubValues[0],
-    "everything": pubsubValues,
-    "timestamp": event.timestamp,
+    majorPeak,
+    dba,
+    "spectra": fftPeaks,
+    "timestamp": new Date(),
     "device": event.attributes.deviceId
   });
-  console.log(event);
-  console.log(pubsubValues);
 };
 
-exports.getLatest = (req, res) => {
-  const latest = await firestore.collection('frequencies').orderBy('timestamp', 'desc').limit(1).get();
-  res.set({
-    'Access-Control-Allow-Methods': 'GET',
-    'Access-Control-Allow-Origin': 'localhost'
+exports.getLatest = async (req, res) => {
+  firestore.collection('frequencies').orderBy('timestamp', 'desc').limit(1).get().then(snapshot => {
+    const docs = snapshot.docs;
+    res.set({
+      'Access-Control-Allow-Methods': 'GET',
+      'Access-Control-Allow-Origin': 'localhost'
+    });
+    res.send(docs[0].data());
   });
-  res.send(latest);
 };
