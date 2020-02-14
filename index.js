@@ -33,7 +33,7 @@ exports.getLatest = async (req, res) => {
     const docs = snapshot.docs;
     res.set({
       'Access-Control-Allow-Methods': 'GET',
-      'Access-Control-Allow-Origin': 'localhost'
+      'Access-Control-Allow-Origin': '*'
     });
     res.send(docs[0].data());
   });
