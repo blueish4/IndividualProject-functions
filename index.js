@@ -28,13 +28,28 @@ exports.newData = (event, context) => {
   });
 };
 
-exports.getLatest = async (req, res) => {
-  firestore.collection('frequencies').orderBy('timestamp', 'desc').limit(1).get().then(snapshot => {
-    const docs = snapshot.docs;
-    res.set({
-      'Access-Control-Allow-Methods': 'GET',
-      'Access-Control-Allow-Origin': '*'
-    });
-    res.send(docs[0].data());
+sendSnapshot = snapshot => {
+  const docs = snapshot.docs;
+  res.set({
+    'Access-Control-Allow-Methods': 'GET',
+    'Access-Control-Allow-Origin': '*'
   });
+  res.send(docs[0].data());
+}
+
+exports.getLatest = async (req, res) => {
+  firestore.collection('frequencies').orderBy('timestamp', 'desc').limit(1).get().then(sendSnapshot);
+};
+
+exports.getHistory = async (req, res) => {
+  const startToken = req.query.startToken;
+  let query = firestore.collection('frequencies')
+  .where('dba', '>', 0)
+  .orderBy('timestamp', 'desc')
+  .limit(20);
+
+  if (startToken) {
+    query.startAfter(startToken);
+  }
+  query.get().then(sendSnapshot);
 };
