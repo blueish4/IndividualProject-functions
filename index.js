@@ -38,7 +38,9 @@ sendSnapshot = snapshot => {
 }
 
 exports.getLatest = async (req, res) => {
-  firestore.collection('frequencies').orderBy('timestamp', 'desc').limit(1).get().then(sendSnapshot);
+  firestore.collection('frequencies').orderBy('timestamp', 'desc').limit(1).get().then(snapshot => {
+    sendSnapshot(snapshot);
+  });
 };
 
 exports.getHistory = async (req, res) => {
