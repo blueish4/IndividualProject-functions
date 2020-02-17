@@ -1,5 +1,5 @@
 
-const  {Firestore} = require('@google-cloud/firestore');
+const {Firestore} = require('@google-cloud/firestore');
 
 const firestore = new Firestore();
 /**
@@ -28,7 +28,7 @@ exports.newData = (event, context) => {
   });
 };
 
-sendSnapshot = snapshot => {
+function sendSnapshot(snapshot) {
   const docs = snapshot.docs;
   res.set({
     'Access-Control-Allow-Methods': 'GET',
