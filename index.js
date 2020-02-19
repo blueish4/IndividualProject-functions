@@ -35,7 +35,7 @@ function sendSnapshot(snapshot, res, req) {
   });
   let buffer = [];
   snapshot.forEach(e => {
-    buffer.push(e.docs());
+    buffer.push(e);
   });
   res.send(buffer);
 }
