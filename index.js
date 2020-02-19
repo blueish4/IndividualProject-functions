@@ -29,17 +29,20 @@ exports.newData = (event, context) => {
 };
 
 function sendSnapshot(snapshot, res, req) {
-  const docs = snapshot.docs;
   res.set({
     'Access-Control-Allow-Methods': 'GET',
     'Access-Control-Allow-Origin': '*'
   });
-  res.send(docs[0].data());
+  let buffer = [];
+  snapshot.forEach(e => {
+    buffer.push(e.docs());
+  });
+  res.send(buffer);
 }
 
 exports.getLatest = async (req, res) => {
   firestore.collection('frequencies').orderBy('timestamp', 'desc').limit(1).get().then(snapshot => {
-    sendSnapshot(snapshot, res, req);
+    sendSnapshot(snapshot.docs, res, req);
   });
 };
 
