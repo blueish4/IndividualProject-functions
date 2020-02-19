@@ -53,5 +53,7 @@ exports.getHistory = async (req, res) => {
   if (startToken) {
     query.startAfter(startToken);
   }
-  query.get().then(sendSnapshot);
+  query.get().then(snapshot => {
+    sendSnapshot(snapshot, res, req);
+  });
 };
