@@ -35,14 +35,14 @@ function sendSnapshot(snapshot, res, req) {
   });
   let buffer = [];
   snapshot.forEach(e => {
-    buffer.push(e);
+    buffer.push(e.docs());
   });
   res.send(buffer);
 }
 
 exports.getLatest = async (req, res) => {
   firestore.collection('frequencies').orderBy('timestamp', 'desc').limit(1).get().then(snapshot => {
-    sendSnapshot(snapshot.docs, res, req);
+    sendSnapshot(snapshot, res, req);
   });
 };
 
@@ -55,8 +55,8 @@ exports.getHistory = async (req, res) => {
   if (startToken) {
     query.startAfter(startToken);
   }
-  query.get().then(snapshot => {
-    const filtered = snapshot.docs.filter((e) => {
+  query.getAll().then(snapshot => {
+    const filtered = snapshot.filter((e) => {
       return e.dba > 0;
     })
     sendSnapshot(filtered, res, req);
