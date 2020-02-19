@@ -46,7 +46,6 @@ exports.getLatest = async (req, res) => {
 exports.getHistory = async (req, res) => {
   const startToken = req.query.startToken;
   let query = firestore.collection('frequencies')
-  .where('dba', '>', 0)
   .orderBy('timestamp', 'desc')
   .limit(20);
 
@@ -54,6 +53,9 @@ exports.getHistory = async (req, res) => {
     query.startAfter(startToken);
   }
   query.get().then(snapshot => {
-    sendSnapshot(snapshot, res, req);
+    const filtered = snapshot.filter((e) => {
+      return e.dba > 0;
+    })
+    sendSnapshot(filtered, res, req);
   });
 };
