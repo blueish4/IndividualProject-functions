@@ -55,7 +55,7 @@ exports.getHistory = async (req, res) => {
   if (startToken) {
     query.startAfter(startToken);
   }
-  query.getAll().then(snapshot => {
+  query.get().then(snapshot => {
     const filtered = snapshot.filter((e) => {
       return e.dba > 0;
     })
