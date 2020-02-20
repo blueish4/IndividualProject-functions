@@ -56,8 +56,8 @@ exports.getHistory = async (req, res) => {
     query.startAfter(startToken);
   }
   query.get().then(snapshot => {
-    const filtered = snapshot.filter((e) => {
-      return e.dba > 0;
+    const filtered = snapshot.docs.filter((e) => {
+      return e.data().dba > 0;
     })
     sendSnapshot(filtered, res, req);
   });
