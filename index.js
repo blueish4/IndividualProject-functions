@@ -58,7 +58,7 @@ exports.getHistory = async (req, res) => {
   query.get().then(snapshot => {
     const filtered = snapshot.docs.filter((e) => {
       return e.data().dba > 0;
-    })
+    });
     sendSnapshot(filtered, res, req);
   });
 };
