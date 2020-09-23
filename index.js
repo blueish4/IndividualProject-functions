@@ -10,7 +10,7 @@ const firestore = new Firestore();
  */
 exports.newData = (event, context) => {
   const decodedData = Buffer.from(event.data, 'base64');
-  let doc = firestore.collection('frequencies').doc();
+  const doc = firestore.collection('frequencies').doc();
   const majorPeak = decodedData.readDoubleLE();
   const dba = decodedData.readDoubleLE(8);
   const fftPeaks = [];
